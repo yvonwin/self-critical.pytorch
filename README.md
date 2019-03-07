@@ -11,13 +11,37 @@ This is based on my [ImageCaptioning.pytorch](https://github.com/ruotianluo/Imag
 - Multi-GPU training
 
 ## Requirements
-Python 2.7 (because there is no [coco-caption](https://github.com/tylin/coco-caption) version for python 3)
+Python 2.7 & python3
 PyTorch 0.4 (along with torchvision)
 cider (already been added as a submodule)
 
 (**Skip if you are using bottom-up feature**): If you want to use resnet to extract image features, you need to download pretrained resnet model for both training and evaluation. The models can be downloaded from [here](https://drive.google.com/open?id=0B7fNdx_jAqhtbVYzOURMdDNHSGM), and should be placed in `data/imagenet_weights`.
 
-## Pretrained models (using resnet101 feature)
+## Prepare
+```sh
+git clone https://github.com/yvonwin/self-critical.pytorch.git
+# if use python3 
+git checkout py3
+# 拉取python3需要的子模块
+git submodule update --init --recursive
+```
+
+## Data & Pretrained models (using resnet101 feature)
+```sh
+$data/cocotalk/
+$data/imagenet_weights/resnet101.pth
+$data/dataset_coco.json
+
+# to generate
+$data/cocotalk/cocotalk_label.h5
+$data/cocotalk/cocotalk_att
+$data/cocotalk/cocotalk_fc
+$data/dataset_coco.json
+$IMAGE_ROOT
+$IMAGE_ROOT/train2014/
+$IMAGE_ROOT/val2014/
+```
+
 Pretrained models are provided [here](https://drive.google.com/open?id=0B7fNdx_jAqhtdE1JRXpmeGJudTg). And the performances of each model will be maintained in this [issue](https://github.com/ruotianluo/neuraltalk2.pytorch/issues/10).
 
 If you want to do evaluation only, you can then follow [this section](#generate-image-captions) after downloading the pretrained models (and also the pretrained resnet101).
