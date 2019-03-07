@@ -41,19 +41,27 @@ import torchvision.models as models
 import skimage.io
 
 from torchvision import transforms as trn
+print(torch.__version__)
 preprocess = trn.Compose([
         #trn.ToTensor(),
         trn.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
+import sys
+sys.path.append('/media/zhaodao/82A6C622A6C61697/A_paper/self-critical.pytorch/misc')
+# print(sys.path)
 
-from misc.resnet_utils import myResnet
-import misc.resnet as resnet
+from resnet_utils import myResnet
+import resnet as resnet
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
+
 
 def main(params):
+  
   net = getattr(resnet, params['model'])()
   net.load_state_dict(torch.load(os.path.join(params['model_root'],params['model']+'.pth')))
   my_resnet = myResnet(net)
-  my_resnet.cuda()
+  my_resnet.to(device)
   my_resnet.eval()
 
   imgs = json.load(open(params['input_json'], 'r'))
@@ -78,8 +86,8 @@ def main(params):
       I = np.concatenate((I,I,I), axis=2)
 
     I = I.astype('float32')/255.0
-    I = torch.from_numpy(I.transpose([2,0,1])).cuda()
-    I = preprocess(I)
+    I = torch.from_numpy(I.transpose([2,0,1]))
+    I = preprocess(I).to(device)
     with torch.no_grad():
       tmp_fc, tmp_att = my_resnet(I, params['att_size'])
     # write to pkl
