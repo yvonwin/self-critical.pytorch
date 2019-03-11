@@ -21,6 +21,8 @@ preprocess = trn.Compose([
 from misc.resnet_utils import myResnet
 import misc.resnet
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 class DataLoaderRaw():
     
     def __init__(self, opt):
@@ -107,8 +109,8 @@ class DataLoaderRaw():
                 img = np.concatenate((img, img, img), axis=2)
 
             img = img[:,:,:3].astype('float32')/255.0
-            img = torch.from_numpy(img.transpose([2,0,1])).cuda()
-            img = preprocess(img)
+            img = torch.from_numpy(img.transpose([2,0,1]))
+            img = preprocess(img).to(device)
             with torch.no_grad():
                 tmp_fc, tmp_att = self.my_resnet(img)
 

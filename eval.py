@@ -87,8 +87,11 @@ parser.add_argument('--verbose_loss', type=int, default=0,
 opt = parser.parse_args()
 
 # Load infos
-with open(opt.infos_path) as f:
+with open(opt.infos_path,'rb') as f:
     infos = utils.pickle_load(f)
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 # override and collect parameters
 if len(opt.input_fc_dir) == 0:

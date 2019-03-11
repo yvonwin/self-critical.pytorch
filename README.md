@@ -14,6 +14,8 @@ This is based on my [ImageCaptioning.pytorch](https://github.com/ruotianluo/Imag
 Python 2.7 & python3
 PyTorch 0.4 (along with torchvision)
 cider (already been added as a submodule)
+gensim(pycoco need)
+java
 
 (**Skip if you are using bottom-up feature**): If you want to use resnet to extract image features, you need to download pretrained resnet model for both training and evaluation. The models can be downloaded from [here](https://drive.google.com/open?id=0B7fNdx_jAqhtbVYzOURMdDNHSGM), and should be placed in `data/imagenet_weights`.
 
@@ -124,7 +126,7 @@ For more options, see `opts.py`.
 
 First you should preprocess the dataset and get the cache for calculating cider score:
 ```
-$ python scripts/prepro_ngrams.py --input_json .../dataset_coco.json --dict_json data/cocotalk.json --output_pkl data/coco-train --split train
+$ python scripts/prepro_ngrams.py --input_json /data/dataset_coco.json --dict_json data/cocotalk.json --output_pkl data/coco-train --split train
 ```
 
 Then, copy the model from the pretrained model using cross entropy. (It's not mandatory to copy the model, just for back-up)
@@ -134,6 +136,8 @@ $ bash scripts/copy_model.sh fc fc_rl
 
 Then
 ```bash
+# if not the path,mkdir 
+$ mkdir log_fc_rl
 $ python train.py --id fc_rl --caption_model fc --input_json data/cocotalk.json --input_fc_dir data/cocotalk_fc --input_att_dir data/cocotalk_att --input_label_h5 data/cocotalk_label.h5 --batch_size 10 --learning_rate 5e-5 --start_from log_fc_rl --checkpoint_path log_fc_rl --save_checkpoint_every 6000 --language_eval 1 --val_images_use 5000 --self_critical_after 30
 ```
 
@@ -152,7 +156,10 @@ the eval script:
 ```bash
 $ python eval.py --model model.pth --infos_path infos.pkl --image_folder blah --num_images 10
 ```
-
+my work examples
+```bash
+$ python eval.py --model log_fc/model.pth --infos_path log_fc/infos_fc.pkl --image_folder temp --num_images 10
+```
 This tells the `eval` script to run up to 10 images from the given folder. If you have a big GPU you can speed up the evaluation by increasing `batch_size`. Use `--num_images -1` to process all images. The eval script will create an `vis.json` file inside the `vis` folder, which can then be visualized with the provided HTML interface:
 
 ```bash
