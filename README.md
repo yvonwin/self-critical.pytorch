@@ -11,7 +11,7 @@ This is based on my [ImageCaptioning.pytorch](https://github.com/ruotianluo/Imag
 - Multi-GPU training
 
 ## Requirements
-Python 2.7 & python3
+Python3
 PyTorch 0.4 (along with torchvision)
 cider (already been added as a submodule)
 gensim(pycoco need)
