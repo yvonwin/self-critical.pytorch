@@ -80,7 +80,8 @@ $ python scripts/prepro_feats.py --input_json data/dataset_coco.json --output_di
 
 **Warning**: the prepro script will fail with the default MSCOCO data because one of their images is corrupted. See [this issue](https://github.com/karpathy/neuraltalk2/issues/4) for the fix, it involves manually replacing one image in the dataset.
 
-### Download Bottom-up features (Skip if you are using resnet features)
+### Download Bottom-up features (Skip if you are using resnet features) 
+> Never use for me
 
 Download pre-extracted feature from [link](https://github.com/peteanderson80/bottom-up-attention). You can either download adaptive one or fixed one.
 
@@ -139,6 +140,14 @@ Then
 # if not the path,mkdir 
 $ mkdir log_fc_rl
 $ python train.py --id fc_rl --caption_model fc --input_json data/cocotalk.json --input_fc_dir data/cocotalk_fc --input_att_dir data/cocotalk_att --input_label_h5 data/cocotalk_label.h5 --batch_size 10 --learning_rate 5e-5 --start_from log_fc_rl --checkpoint_path log_fc_rl --save_checkpoint_every 6000 --language_eval 1 --val_images_use 5000 --self_critical_after 30
+```
+> 注意 : start_from 是从断点恢复
+如果更换模型:
+可更换种类:fc,show_tell att2in att2all2
+修改caption_model,start_from,checkpoint_path
+例如att2all2
+```
+python train.py --id att2all2 --caption_model att2all2 --input_json data/cocotalk.json --input_fc_dir data/cocotalk_fc --input_att_dir data/cocotalk_att --input_label_h5 data/cocotalk_label.h5 --batch_size 10 --learning_rate 5e-5  --checkpoint_path log_att2all2 --save_checkpoint_every 6000 --language_eval 1 --val_images_use 5000 --self_critical_after 30
 ```
 
 You will see a huge boost on Cider score, : ).
