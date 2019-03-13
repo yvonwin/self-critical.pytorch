@@ -16,6 +16,8 @@ PyTorch 0.4 (along with torchvision)
 cider (already been added as a submodule)
 gensim(pycoco need)
 java
+tensorflow(i use 1.8.0),tensorboardx(pytorch loss可视化,安装默认即可)
+
 
 (**Skip if you are using bottom-up feature**): If you want to use resnet to extract image features, you need to download pretrained resnet model for both training and evaluation. The models can be downloaded from [here](https://drive.google.com/open?id=0B7fNdx_jAqhtbVYzOURMdDNHSGM), and should be placed in `data/imagenet_weights`.
 
@@ -148,6 +150,12 @@ $ python train.py --id fc_rl --caption_model fc --input_json data/cocotalk.json 
 例如att2all2
 ```
 python train.py --id att2all2 --caption_model att2all2 --input_json data/cocotalk.json --input_fc_dir data/cocotalk_fc --input_att_dir data/cocotalk_att --input_label_h5 data/cocotalk_label.h5 --batch_size 10 --learning_rate 5e-5  --checkpoint_path log_att2all2 --save_checkpoint_every 6000 --language_eval 1 --val_images_use 5000 --self_critical_after 30
+```
+
+loss可视化
+```
+$ cd log_fc
+$ tensorboard --logdir ./
 ```
 
 You will see a huge boost on Cider score, : ).
